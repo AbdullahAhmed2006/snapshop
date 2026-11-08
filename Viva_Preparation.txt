@@ -1,0 +1,66 @@
+# AWT Viva Preparation Guide - SnapShop E-Commerce Project
+
+Hello Abdullah! This document contains everything you need to know about your "SnapShop" project to confidently answer any Viva question. Read through this carefully.
+
+## 1. Project Overview
+SnapShop is a responsive, interactive E-Commerce Web Application built to fulfill the AWT assignment requirements. It features a modern, dark-themed UI (Cyber-Cyan and Deep Slate palette) with interactive sections such as product listings, a fully featured CRUD management dashboard, an FAQ accordion, and customer reviews. 
+
+## 2. Technologies & Languages Used
+Although the assignment requested HTML5, CSS3, and JavaScript (ES6), this project implements those core languages through a modern, industry-standard framework:
+- **React & Next.js (App Router)**: Handles the structure (HTML logic) and routing. React allows for building reusable components.
+- **Tailwind CSS & Shadcn UI**: Used for modern, responsive, and flexible styling without writing pure vanilla CSS from scratch.
+- **JavaScript (ES6+) / TypeScript**: You used modern JS features like `async/await`, Arrow Functions, `map()`, `filter()`, destructuring, and State management (`useState`, `useEffect`).
+- **Fetch API**: Used to integrate dummy external servers for real-time data handling.
+- **Dummy APIs**: 
+  - FakeStoreAPI (`https://fakestoreapi.com/products`): Used for product fetching and CRUD operations.
+  - ReqRes API (`https://reqres.in/img/faces/`): Used occasionally for fetching dummy user avatars for the review section.
+
+## 3. Project File & Folder Structure
+Your codebase follows a modern Next.js structure:
+- **`app/`**: This is the heart of your project (App Router). Every folder inside here represents a route (page) on your website.
+  - `page.tsx`: The main landing page holding the Hero Section, Featured Products, FAQs, Developer Info, and Reviews.
+  - `management/page.tsx`: The specific CRUD dashboard where FakeStoreAPI is integrated to add, edit, and delete products.
+  - `layout.tsx` / `globals.css`: Determines the global layout (header/footer) and global CSS variables for your dark theme.
+- **`components/`**: Houses all the reusable UI pieces. 
+  - `ui/`: Contains custom Shadcn UI components like `Button`, `Accordion` (for FAQs), `Input`, etc.
+  - `home/`: Might contain specific components like your Hero Section.
+- **`lib/`**: Contains utility functions.
+- **`public/`**: Stores static assets like local images or icons.
+- **`package.json`**: Keeps track of all your project dependencies (like Tailwind, Lucide React icons, framer-motion) and scripts (like `npm run dev`).
+
+## 4. How to Run the Project
+If the examiner asks you to demonstrate running the application:
+1. Open your terminal in the project root directory (`d:\SnapShop`).
+2. Type and enter: `npm run dev`
+3. This triggers the Next.js development server to start up.
+4. Open your web browser and go to `http://localhost:3000`.
+
+## 5. How The API and CRUD Works (Very Important!)
+You handled the data dynamically in the `app/management/page.tsx` file using React state (`useState`) and the `Fetch API`.
+
+- **GET (Read)**: You use `useEffect(() => { ... }, [])` to run a `fetch('https://fakestoreapi.com/products')` request as soon as the management dashboard loads. The `.json()` response is saved into the `products` state array and is rendered dynamically using the `.map()` function.
+- **POST (Create)**: When adding a new product via the form, `handleAdd` triggers. It sends a `fetch` POST request with the new product details converted to JSON via `JSON.stringify(addForm)`. The Dummy API returns the new product, which is dynamically pushed to the top of the UI list.
+- **PUT (Update)**: When the user clicks the Edit button, `handleUpdate` triggers. It takes the specific product `id` and sends a `fetch` PUT request to `https://fakestoreapi.com/products/${id}` with the modified data.
+- **DELETE (Remove)**: Clicking the Trash icon fires the `handleDelete(id)` function. It makes a `DELETE` request to the API. After a successful response, you update the UI dynamically by using the javascript `.filter()` method to remove that ID from the `products` state without reloading the page.
+
+## 6. Common Viva Questions & Best Answers
+
+**Q1: Did you use Vanilla HTML/CSS/JS or a framework?**
+A: I used Next.js and React, which is a modern framework built *on top* of HTML, CSS, and JS. It allowed me to build a much more robust and modular single-page application (SPA). For styling, I utilized Tailwind CSS.
+
+**Q2: How are you managing state when items are added or deleted?**
+A: I use the React `useState` hook. When I delete an item, I send the DELETE request to the Dummy API using `fetch`. Once the API resolves, I use JavaScript's `filter()` method to remove the object from the local state, which instantly triggers React to re-render the UI dynamically.
+
+**Q3: What dummy API did you use and why?**
+A: I used 'FakeStoreAPI.com' for products and CRUD operations because it accurately mimics real-world backend responses for E-commerce platforms, giving JSON data containing titles, prices, categories, and image URLs. I also utilized ReqRes for dummy avatar images in the customer review sections.
+
+**Q4: Explain the Fetch API mechanism you used.**
+A: The Fetch API provides a modern interface for fetching resources asynchronously. In my app, I used modern `async/await` syntax alongside `fetch()`. For example, I wait for `fetch()` to resolve the promise, parse the response via `await res.json()`, and then utilize the data. We also wrap these calls in `try...catch` blocks to gracefully handle any network errors.
+
+**Q5: How did you implement the FAQ section?**
+A: The FAQ section utilizes an Accordion component. It maps over common questions and hides the descriptions using standard CSS transitions and React state toggles, maintaining a clean and responsive layout.
+
+**Q6: What happens if the FakeStoreAPI server is slow?**
+A: I implemented an `isLoading` boolean state. While the initial GET request is pending in the background, `isLoading` is true, and the UI shows a "Loading Product Management..." prompt, ensuring a good user experience.
+
+Good Luck, Abdullah! You've built an excellent, high-quality application.
